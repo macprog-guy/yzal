@@ -4,13 +4,11 @@ Yzal (Lazy written backwards) is a function that allows you to implement complet
 It acts a bit like a "lazy" spreadsheet in that if a value C depends on A and B, C will only get calculated on first call or 
 if B or C have changed.
 
-# Quick start
-
-## Installation
+# Installation
 
     npm i --save yzal
 
-## Example
+# Example
 
 ```js
 
@@ -20,18 +18,18 @@ let foo = {a:1, b:2},
     bar = {a:5, b:3}
 
 let a = lazy({
-	      deps: () => [foo.a, bar.a]
-		  calc: (x, y) => x + y  // Some long computation
+	      deps: () => [foo.a, bar.a],
+		  calc: (x, y) => x + y   // Some long computation
 	    }),
 
 	b = lazy({
-	      deps: () => [foo.b, bar.b]
-		  calc: (x, y) => x * y  // Some long computation
+	      deps: () => [foo.b, bar.b],
+		  calc: (x, y) => x * y   // Some long computation
 		}),
 
 	c = lazy({
-		  deps: () => [a(), b()]  // Lazy dependencies!
-		  calc: (a,b) => ({a, b}) // Another long computation
+		  deps: () => [a(), b()],  // Lazy dependencies!
+		  calc: (a,b) => ({a, b})  // Another long computation
 		})
 
 // Will compute a,b then c
@@ -45,6 +43,40 @@ foo.a = 3
 console.log('c=', c())
 
 ```
+
+# Strict Mode
+
+In normal mode, dependencies are compared using deep equality. This can be wastefull
+and expensive if the source data is very large. Ideally, you are using immutable
+source, which can be compared using === instead.
+
+## Example
+
+```js
+
+let someHugeArray = [...]
+
+let c = lazy({
+	      deps: () => someHugeArray,
+		  calc: (arr) => arr.reduce((acc, val) => { /* some expensive function */ }, {}),
+		  strict: true
+	    }),
+
+// Will compute c
+console.log('c=', c())    
+
+// Will used cached value for c because
+// reference to someHugeArray has not changed
+someHugeArray[0] = 0
+someHugeArray[123456] = 0
+console.log('c=', c())
+
+// Will re-compute c because the reference has changed
+someHugeArray = [...someHugeArray]
+console.log('c=', c())
+
+
+
 
 # License
 
