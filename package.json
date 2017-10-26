@@ -1,10 +1,10 @@
 {
   "name": "yzal",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Compute dependency trees in a lazy manner.",
   "main": "index.js",
   "scripts": {
-    "test": "npm test"
+    "test": "mocha ./test.js"
   },
   "keywords": [
     "lazy",
@@ -12,7 +12,19 @@
     "tree",
     "dependency"
   ],
-  "author": "Eric Methot <em@nuascent.com>",
+  "homepage":"https://github.com/macprog-guy/yzal",
+  "author": {
+    "name": "Eric Methot",
+    "email": "eric@macprog.com",
+    "url": "https://github.com/yzal"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/macprog-guy/yzal.git"
+  },
+  "bugs": {
+    "url": "http://github.com/macprog-guy/yzal/issues"
+  },
   "license": "ISC",
   "dependencies": {
     "lodash.clonedeep": "4.5.0",
