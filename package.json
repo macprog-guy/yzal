@@ -1,6 +1,6 @@
 {
   "name": "yzal",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Compute dependency trees in a lazy manner.",
   "main": "index.js",
   "scripts": {

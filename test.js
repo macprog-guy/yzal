@@ -107,6 +107,26 @@ describe('yzal', () => {
 
 			done()
 		})
+
+		it('should detect changes with null or undefined', done => {
+
+			let [count, x] = [0, [1,2,3]]
+
+			let a = lazy({
+				deps: () => [x],
+				calc:  k => { count++; return x },
+				strict: true
+			})
+
+			expect(a()).to.eql([1,2,3])
+			x = [1,2,null]
+			expect(a()).to.eql([1,2,null])
+			x = [undefined, 2, null]
+			expect(a()).to.eql([undefined,2,null])
+			expect(count).to.equal(3)
+
+			done()
+		})
 	})
 
 

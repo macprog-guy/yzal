@@ -4,10 +4,10 @@ let isequal   = require('lodash.isequal'),
     cloneDeep = require('lodash.clonedeep')
 
 function strictArrayEqual(a, b) {
-	return a.length === b.length && !a.find((v,i) => v !== b[i]) 
+	return a && b && a.length === b.length && a.findIndex((v,i) => v !== b[i]) < 0
 }
 
-module.exports = function Lazy({deps, calc, strict}) {
+module.exports = function Lazy({deps, calc, strict, debug}) {
 	
 	if (typeof deps !== 'function')
 		throw TypeError('Lazy(deps, calc): parameter deps should be a function returning an array')
@@ -36,7 +36,12 @@ module.exports = function Lazy({deps, calc, strict}) {
         if (_cachedDeps === undefined || !eq(_cachedDeps, _deps)) {
         	_cachedValue = calc(..._deps)
         	_cachedDeps  = clone(_deps)
-        }
+        	if (debug)
+        		console.log(`lazy [${debug}]: computed value`, _cachedValue)
+        } else if (debug) {
+    		console.log(`lazy [${debug}]: using cached value`, _cachedValue)
+    	}
+
 
         // Return the cached value
         return _cachedValue
